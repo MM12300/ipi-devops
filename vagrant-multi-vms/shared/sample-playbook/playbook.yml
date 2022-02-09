@@ -1,0 +1,12 @@
+---
+- name: install packages
+  hosts : webservers
+  become: yes
+  tasks:
+    - name: install nginx
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+
