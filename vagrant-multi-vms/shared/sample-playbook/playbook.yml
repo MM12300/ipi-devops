@@ -2,6 +2,8 @@
 - name: install packages
   hosts : webservers
   become: yes
+  vars_files:
+    - db_vars.yml
   tasks:
     - name: install nginx
       apt:
@@ -10,6 +12,7 @@
           - redis
           - mariadb-server
           - mariadb-client
+          - python3-pymysql
         state: latest
         update_cache: yes
     - name : start services
@@ -20,6 +23,13 @@
       with_items:
         - nginx
         - mariadb
+    - name : create mysql server
+      mysql_user:
+        name: "{{ db_name }}"
+        password: "{{ db_password }}"
+        state: present
+        priv: "{{ db_username }}.*:ALL,GRANT"
+
 
 
 
