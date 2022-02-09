@@ -5,8 +5,21 @@
   tasks:
     - name: install nginx
       apt:
-        name: nginx
+        name:
+          - nginx
+          - redis
+          - mariadb-server
+          - mariadb-client
         state: latest
         update_cache: yes
+    - name : start services
+      service :
+        name : "{{ item }}"
+        state : started
+        enabled : yes
+      with_items:
+        - nginx
+        - mariadb
+
 
 
